@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class ChoosePassword extends AppCompatActivity {
     private ImageButton second;
     private ImageButton third;
     private ImageButton forth;
+    private Button back;
     private TextView text;
     private Random rnd = new Random();
     private String encryptedPW;
@@ -77,6 +79,14 @@ public class ChoosePassword extends AppCompatActivity {
         btnList.add(third);
         btnList.add(forth);
 
+        back = (Button)findViewById(R.id.btn_backToUploadPW);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChoosePassword.this, UploadPasswords.class);
+                startActivity(intent);
+            }
+        });
 
         myRef = FirebaseDatabase.getInstance().getReference("Datas").child("Datas");
         myPW = FirebaseDatabase.getInstance().getReference("Datas").child("Passwords");
@@ -114,7 +124,6 @@ public class ChoosePassword extends AppCompatActivity {
                     ShowImage showImageList = di.getValue(ShowImage.class);
                     imageList.add(showImageList);
                 }
-                text.setText("abc");
 
                 int random = rnd.nextInt(imageList.size());
                 ArrayList<String> URLlist = new ArrayList<String>();

@@ -41,6 +41,7 @@ public class UploadPasswords extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private Button btnUploadPW;
     private Button btnNext;
+    private Button btnBack;
     private RecyclerView mUploadList;
 
     private List<String> fileNameList;
@@ -68,6 +69,7 @@ public class UploadPasswords extends AppCompatActivity {
 
         btnUploadPW = (Button) findViewById(R.id.button_uploadpw);
         btnNext = (Button)findViewById(R.id.btnNext2);
+        btnBack = (Button)findViewById(R.id.button_backToUpload);
         mUploadList = (RecyclerView) findViewById(R.id.recyclerView2);
 
         fileNameList = new ArrayList<>();
@@ -95,6 +97,14 @@ public class UploadPasswords extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UploadPasswords.this, ChoosePassword.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (UploadPasswords.this, MainActivity.class);
                 startActivity(intent);
             }
         });
