@@ -35,7 +35,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class ChoosePassword extends AppCompatActivity {
     private List<ShowImage> imageList;
-    private List<String> encryptedPWList;
+    private List<PasswordList> encryptedPWList;
     private List<String> decryptedPWList;
     DatabaseReference myRef;
     DatabaseReference myPW;
@@ -96,18 +96,21 @@ public class ChoosePassword extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot di : dataSnapshot.getChildren()) {
-                    encryptedPW = di.getValue(String.class);
-                    encryptedPWList.add(encryptedPW);
+                    PasswordList getEncryptedPW = di.getValue(PasswordList.class);
+                    encryptedPWList.add(getEncryptedPW);
                 }
-                for(int i=0;i<encryptedPWList.size();i++){
+                for(int i=0;i<encryptedPWList.size();i++) {
                     try {
-                        String decryptedPW = decrypt(encryptedPWList.get(i));
+                        PasswordList getEncryptedPW = encryptedPWList.get(i);
+                        String toDecrypt = getEncryptedPW.getPassword();
+                        String decryptedPW = decrypt(toDecrypt);
                         decryptedPWList.add(decryptedPW);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -131,7 +134,6 @@ public class ChoosePassword extends AppCompatActivity {
                 ArrayList<String> password = new ArrayList<>();
                 ArrayList<String> passwordFilename = new ArrayList<>();
 
-
                 for (int i = 0; i < imageList.size(); i++) {
                     ShowImage getData = imageList.get(random);
                     imageURL = getData.getImageUrl();
@@ -147,143 +149,114 @@ public class ChoosePassword extends AppCompatActivity {
                     filename.add(file);
                 }
 
-                int i=0;
-                while (password.size()!=4) {
+                int i = 0;
+                password.clear();
                     //1th is password
-                    if (decryptedPWList.contains(filename)){
-                        password.add(imageURL);
+                    if (decryptedPWList.contains(filename.get(i))) {
+                        password.add(URLlist.get(i));
                         passwordFilename.add(filename.get(i));
                         URLlist.remove(i);
                         filename.remove(i);
-
-                        while (decryptedPWList.contains(filename)){
+                        while (decryptedPWList.contains(filename.get(i)) && password.size()!=4) {
                             i++;
-                            while (!decryptedPWList.contains(filename) && password.size()!=4){
-                                password.add(imageURL);
+                            while ((!decryptedPWList.contains(filename.get(i))) && password.size()!=4) {
+                                password.add(URLlist.get(i));
                                 passwordFilename.add(filename.get(i));
                                 URLlist.remove(i);
                                 filename.remove(i);
-                                i++;
-                            }
-                            if (password.size()==4){
-                                break;
                             }
                         }
-                        while (!decryptedPWList.contains(filename)){
-                            password.add(imageURL);
+                        while ((!decryptedPWList.contains(filename.get(i))) && password.size()!=4) {
+                            password.add(URLlist.get(i));
                             passwordFilename.add(filename.get(i));
                             URLlist.remove(i);
                             filename.remove(i);
-                            i++;
-                            while (decryptedPWList.contains(filename)&& password.size()!=4){
+                            while (decryptedPWList.contains(filename.get(i)) && password.size()!=4) {
                                 i++;
-                            }
-                            if (password.size()==4){
-                                break;
                             }
                         }
                     }
+
                     //1st not password
                     else{
-                        password.add(imageURL);
+                        password.add(URLlist.get(i));
                         passwordFilename.add(filename.get(i));
                         URLlist.remove(i);
                         filename.remove(i);
-                        i++;
                         //2nd is password
-                        if (decryptedPWList.contains(filename)){
-                            password.add(imageURL);
+                        if (decryptedPWList.contains(filename.get(i))){
+                            password.add(URLlist.get(i));
                             passwordFilename.add(filename.get(i));
                             URLlist.remove(i);
                             filename.remove(i);
-                            i++;
-                            while (decryptedPWList.contains(filename)){
+                            while (decryptedPWList.contains(filename.get(i)) && password.size()!=4){
                                 i++;
-                                while (!decryptedPWList.contains(filename) && password.size()!=4){
-                                    password.add(imageURL);
+                                while ((!decryptedPWList.contains(filename.get(i))) && password.size()!=4){
+                                    password.add(URLlist.get(i));
                                     passwordFilename.add(filename.get(i));
                                     URLlist.remove(i);
                                     filename.remove(i);
-                                    i++;
-                                }
-                                if (password.size()==4){
-                                    break;
                                 }
                             }
-                            while (!decryptedPWList.contains(filename)){
-                                password.add(imageURL);
+
+                            while ((!decryptedPWList.contains(filename.get(i))) && password.size()!=4) {
+                                password.add(URLlist.get(i));
                                 passwordFilename.add(filename.get(i));
                                 URLlist.remove(i);
                                 filename.remove(i);
-                                i++;
-                                while (decryptedPWList.contains(filename)&& password.size()!=4){
+                                while (decryptedPWList.contains(filename.get(i)) && password.size()!=4) {
                                     i++;
-                                }
-                                if (password.size()==4){
-                                    break;
                                 }
                             }
                         }
                         //2nd not password
                         else{
-                            password.add(imageURL);
+                            password.add(URLlist.get(i));
                             passwordFilename.add(filename.get(i));
                             URLlist.remove(i);
                             filename.remove(i);
-                            i++;
                             //3rd is pw
-                            if (decryptedPWList.contains(filename)) {
-                                password.add(imageURL);
+                            if (decryptedPWList.contains(filename.get(i))){
+                                password.add(URLlist.get(i));
                                 passwordFilename.add(filename.get(i));
                                 URLlist.remove(i);
                                 filename.remove(i);
-                                i++;
-                                while (decryptedPWList.contains(filename)) {
+                                while (decryptedPWList.contains(filename.get(i)) && password.size() != 4) {
                                     i++;
-                                    while (!decryptedPWList.contains(filename) && password.size() != 4) {
-                                        password.add(imageURL);
+                                    while ((!decryptedPWList.contains(filename.get(i))) && password.size() != 4) {
+                                        password.add(URLlist.get(i));
                                         passwordFilename.add(filename.get(i));
                                         URLlist.remove(i);
                                         filename.remove(i);
-                                        i++;
-                                    }
-                                    if (password.size() == 4) {
-                                        break;
                                     }
                                 }
-                                while (!decryptedPWList.contains(filename)) {
-                                    password.add(imageURL);
+                                while ((!decryptedPWList.contains(filename.get(i))) && password.size()!=4) {
+                                    password.add(URLlist.get(i));
                                     passwordFilename.add(filename.get(i));
                                     URLlist.remove(i);
                                     filename.remove(i);
-                                    i++;
-                                    while (decryptedPWList.contains(filename) && password.size() != 4) {
+                                    while (decryptedPWList.contains(filename.get(i)) && password.size()!=4) {
                                         i++;
-                                    }
-                                    if (password.size() == 4) {
-                                        break;
                                     }
                                 }
                             }
                             //3rd not pw
                             else{
-                                password.add(imageURL);
+                                password.add(URLlist.get(i));
                                 passwordFilename.add(filename.get(i));
                                 URLlist.remove(i);
                                 filename.remove(i);
-                                i++;
                                 //4th is pw
-                                if (decryptedPWList.contains(filename)) {
-                                    password.add(imageURL);
+                                if (decryptedPWList.contains(filename.get(i))){
+                                    password.add(URLlist.get(i));
                                     passwordFilename.add(filename.get(i));
                                     URLlist.remove(i);
                                     filename.remove(i);
-                                    break;
                                 }else{
-                                    while(!decryptedPWList.contains(filename)){
+                                    while((!decryptedPWList.contains(filename.get(i))) && password.size() != 4){
                                         i++;
-                                        if (decryptedPWList.contains(filename)) {
-                                            password.add(imageURL);
+                                        if (decryptedPWList.contains(filename.get(i))){
+                                            password.add(URLlist.get(i));
                                             passwordFilename.add(filename.get(i));
                                             URLlist.remove(i);
                                             filename.remove(i);
@@ -294,7 +267,7 @@ public class ChoosePassword extends AppCompatActivity {
                             }
                         }
                     }
-                }
+
 
                 ArrayList<String> newPW = new ArrayList<>();
                 final ArrayList<String> newPWFilename = new ArrayList<>();
@@ -314,12 +287,13 @@ public class ChoosePassword extends AppCompatActivity {
                     }
 
                     for (int j=0;j<newPW.size();j++){
-                        Glide.with(ChoosePassword.this).load(URLlist.get(i)).into(btnList.get(i));
+                        Glide.with(ChoosePassword.this).load(newPW.get(j)).into(btnList.get(j));
                     }
                 }else{
                     Intent refresh = new Intent(ChoosePassword.this, ChoosePassword.class);
                     startActivity(refresh);
                 }
+                password.clear();
 
                 first.setOnClickListener(new View.OnClickListener() {
                     @Override

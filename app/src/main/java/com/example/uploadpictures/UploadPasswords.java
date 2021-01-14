@@ -122,18 +122,14 @@ public class UploadPasswords extends AppCompatActivity {
 
                 for (int i = 0; i < totalItemSelected; i++) {
                     final Uri fileUri = data.getClipData().getItemAt(i).getUri();
-                    String fileName = getFileName(fileUri);
-                    String fileNameOnly = fileName.replaceFirst("[.][^.]+$", "");
-
-                    try {
-                        encryptedFilename = encrypt(fileNameOnly);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    final String fileName = getFileName(fileUri);
+                    //String fileNameOnly = fileName.replaceFirst("[.][^.]+$", "");
 
                     fileNameList.add(fileName);
                     fileDoneList.add("Uploading");
                     uploadPicture.notifyDataSetChanged();
+
+
 
                     final StorageReference imageToUpload = mStorage.child("Images").child(fileName);
                     final DatabaseReference fileToUpload = myRef.child("Datas");
@@ -151,7 +147,7 @@ public class UploadPasswords extends AppCompatActivity {
 
                             uploadPicture.notifyDataSetChanged();
 
-                            pwToUpload.push().setValue(encryptedFilename);
+
 
                             Task<Uri> downloadUrl = imageToUpload.getDownloadUrl();
                             downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -162,6 +158,16 @@ public class UploadPasswords extends AppCompatActivity {
                                     save.setImageUrl(downloadedUrl);
                                     save.setFilename(getFileName(fileUri));
                                     fileToUpload.push().setValue(save);
+
+                                    try {
+                                        encryptedFilename = encrypt(fileName);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    PasswordList pwlist = new PasswordList();
+                                    pwlist.setPassword(encryptedFilename);
+                                    pwToUpload.push().setValue(pwlist);
                                 }
                             });
                         }

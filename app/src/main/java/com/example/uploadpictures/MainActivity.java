@@ -120,8 +120,9 @@ public class MainActivity extends AppCompatActivity {
 
             if(data.getClipData() != null){
                 int totalItemSelected = data.getClipData().getItemCount();
+                if (totalItemSelected > 4){
 
-                for(int i=0; i<totalItemSelected; i++){
+                for(int i=0; i<totalItemSelected; i++) {
                     final Uri fileUri = data.getClipData().getItemAt(i).getUri();
                     String fileName = getFileName(fileUri);
 
@@ -148,22 +149,24 @@ public class MainActivity extends AppCompatActivity {
 
                             Task<Uri> downloadUrl = imageToUpload.getDownloadUrl();
                             downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                   @Override
-                                   public void onSuccess(Uri uri) {
-                                       String downloadedUrl = uri.toString();
-                                       ImageInDatabase save = new ImageInDatabase();
-                                       save.setImageUrl(downloadedUrl);
-                                       save.setFilename(getFileName(fileUri));
-                                       fileToUpload.push().setValue(save);
-                                   }
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String downloadedUrl = uri.toString();
+                                    ImageInDatabase save = new ImageInDatabase();
+                                    save.setImageUrl(downloadedUrl);
+                                    save.setFilename(getFileName(fileUri));
+                                    fileToUpload.push().setValue(save);
+                                }
                             });
                         }
                     });
 
-
+                }
                     //update with generated key(new)
                     //String key = fileToUpload.getKey();
                     //saveImageData.setKey(key);
+                }else{
+                    Toast.makeText(MainActivity.this, "Please select at least 4 photos", Toast.LENGTH_SHORT).show();
                 }
 
                 //Toast.makeText(MainActivity.this, "Selected Multiple Files", Toast.LENGTH_SHORT).show();
