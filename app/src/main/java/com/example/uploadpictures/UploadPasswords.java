@@ -46,7 +46,7 @@ public class UploadPasswords extends AppCompatActivity {
 
     private List<String> fileNameList;
     private List<String> fileDoneList;
-    private UploadPicture uploadPicture;
+    private UploadPictureForPassword uploadPicture;
 
     String encryptedFilename;
 
@@ -75,7 +75,7 @@ public class UploadPasswords extends AppCompatActivity {
         fileNameList = new ArrayList<>();
         fileDoneList = new ArrayList<>();
 
-        uploadPicture = new UploadPicture(fileNameList, fileDoneList);
+        uploadPicture = new UploadPictureForPassword(fileNameList, fileDoneList);
 
         mUploadList.setLayoutManager(new LinearLayoutManager(this));
         mUploadList.setHasFixedSize(true);
@@ -96,16 +96,21 @@ public class UploadPasswords extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UploadPasswords.this, ChoosePassword.class);
-                startActivity(intent);
+                if (fileDoneList.size() != 0) {
+                    Intent intent = new Intent(UploadPasswords.this, ChoosePassword.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(UploadPasswords.this, "Please upload at least 1 photo.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (UploadPasswords.this, MainActivity.class);
+                Intent intent = new Intent(UploadPasswords.this, MainActivity.class);
                 startActivity(intent);
+
             }
         });
     }

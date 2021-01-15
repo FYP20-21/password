@@ -77,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UploadPasswords.class);
-                startActivity(intent);
+                if (fileDoneList.size() > 3) {
+                    Intent intent = new Intent(MainActivity.this, UploadPasswords.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(MainActivity.this, "Please upload at least 4 photos.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(data.getClipData() != null){
                 int totalItemSelected = data.getClipData().getItemCount();
-                if (totalItemSelected > 4){
+                if (totalItemSelected > 3){
 
                 for(int i=0; i<totalItemSelected; i++) {
                     final Uri fileUri = data.getClipData().getItemAt(i).getUri();
