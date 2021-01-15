@@ -299,7 +299,7 @@ public class ChoosePassword extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (decryptedPWList.contains(newPWFilename.get(0))){
-                            Intent intent = new Intent(ChoosePassword.this, AfterPassword.class);
+                            Intent intent = new Intent(ChoosePassword.this, profile.class);
                             startActivity(intent);
                         }else{
                             Intent intent = new Intent(ChoosePassword.this, FailToAccess.class);
@@ -311,7 +311,7 @@ public class ChoosePassword extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (decryptedPWList.contains(newPWFilename.get(1))){
-                            Intent intent = new Intent(ChoosePassword.this, AfterPassword.class);
+                            Intent intent = new Intent(ChoosePassword.this, profile.class);
                             startActivity(intent);
                         }else{
                             Intent intent = new Intent(ChoosePassword.this, FailToAccess.class);
@@ -323,7 +323,7 @@ public class ChoosePassword extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (decryptedPWList.contains(newPWFilename.get(2))){
-                            Intent intent = new Intent(ChoosePassword.this, AfterPassword.class);
+                            Intent intent = new Intent(ChoosePassword.this, profile.class);
                             startActivity(intent);
                         }else{
                             Intent intent = new Intent(ChoosePassword.this, FailToAccess.class);
@@ -335,7 +335,7 @@ public class ChoosePassword extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (decryptedPWList.contains(newPWFilename.get(3))){
-                            Intent intent = new Intent(ChoosePassword.this, AfterPassword.class);
+                            Intent intent = new Intent(ChoosePassword.this, profile.class);
                             startActivity(intent);
                         }else{
                             Intent intent = new Intent(ChoosePassword.this, FailToAccess.class);

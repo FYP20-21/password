@@ -40,7 +40,7 @@ public class UploadPasswords extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private Button btnUploadPW;
-    private Button btnNext;
+    private Button btnDone;
     private Button btnBack;
     private RecyclerView mUploadList;
 
@@ -68,7 +68,7 @@ public class UploadPasswords extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference("Datas");
 
         btnUploadPW = (Button) findViewById(R.id.button_uploadpw);
-        btnNext = (Button)findViewById(R.id.btnNext2);
+        btnDone = (Button)findViewById(R.id.btnDoneRegister);
         btnBack = (Button)findViewById(R.id.button_backToUpload);
         mUploadList = (RecyclerView) findViewById(R.id.recyclerView2);
 
@@ -93,11 +93,12 @@ public class UploadPasswords extends AppCompatActivity {
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fileDoneList.size() != 0) {
-                    Intent intent = new Intent(UploadPasswords.this, ChoosePassword.class);
+                    Toast.makeText(UploadPasswords.this, "You have been registered successfully!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(UploadPasswords.this, afterSetPassword.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(UploadPasswords.this, "Please upload at least 1 photo.", Toast.LENGTH_SHORT).show();
